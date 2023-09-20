@@ -34,4 +34,4 @@ def see_log():
     return render_template('see_logg.html')
 
 if __name__ == "__main__":
-    app.run(debug=True, host="192.168.1.5", port=7070)
+    app.run(debug=True, port=7070)
