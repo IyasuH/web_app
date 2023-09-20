@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
+    <title>Exercise Log</title>
+</head>
+<body>
+  <header>
+    <h1>Dere GYM</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/add_exe_log">Exercise Log</a>
+      <a href="/see_exe_log">Profile</a>
+    </nav>
+  </header>
+  <div id="app">
+  <h1>Exercise Log</h1>
+  <table>
+    <tr>
+      <th>Body of Area</th>
+      <th>Performed Exercise Name</th>
+      <th>Equipment Used</th>
+      <th>Number of Reps</th>
+      <th>Total Cycle of Reptation</th>
+      <th>Date Worked</th>
+    </tr>
+    <tr>
+        <td>Biceps</td>
+        <td>Push ups</td>
+        <td>none</td>
+        <td>10</td>
+        <td>3</td>
+        <td>17/09/2023</td>
+    </tr>
+    {% for exercise_log in exercise_logs %}
+    <tr>
+      <td>{{ exercise_log.body_of_area }}</td>
+      <td>{{ exercise_log.performed_exercise_name }}</td>
+      <td>{{ exercise_log.equipment_used }}</td>
+      <td>{{ exercise_log.number_of_reps }}</td>
+      <td>{{ exercise_log.total_cycle_of_reptation }}</td>
+      <td>{{ exercise_log.date_worked }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  </div>
+</body>
+</html>

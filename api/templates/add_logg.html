@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gym Add Logg</title>
+    <link rel="stylesheet" href="../static/styles/style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
+</head>
+<body>
+    <header>
+      <h1>Dere GYM</h1>
+      <nav>
+        <a href="/">Home</a>
+        <a href="/add_exe_log">Exercise Log</a>
+        <a href="/see_exe_log">Profile</a>
+      </nav>
+    </header>
+
+    <div id="app">
+        <h1>Gym Log Telegram Web App</h1>
+        <p>Enter your exercise info</p>
+        <!-- Exercise log form -->        
+        <form id="exercise-log-form">
+            <table>
+              <tr>
+                <th>Body of Area</th>
+                <td><input type="text" name="bodyOfArea"></td>
+              </tr>
+              <tr>
+                <th>Performed Exercise Name</th>
+                <td><input type="text" name="performedExerciseName"></td>
+              </tr>
+              <tr>
+                <th>Equipment Used(be specific)</th>
+                <td><input type="text" name="equipmentUsed"></td>
+              </tr>
+              <tr>
+                <th>Number of Reps</th>
+                <td><input type="number" name="numberOfReps"></td>
+              </tr>
+              <tr>
+                <th>Total Cycle of Reptation</th>
+                <td><input type="number" name="totalCycleOfReptation"></td>
+              </tr>
+              <tr>
+                <th>Date Worked</th>
+                <td><input type="date" name="dateWorked"></td>
+              </tr>
+            </table>
+            <input type="submit" value="Submit">
+          </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/styles/style.css">
+    <title>Gym Log Home</title>
+    <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
+</head>
+<body>
+    <header>
+        <h1>Dere GYM</h1>
+        <nav>
+          <a href="/">Home</a>
+          <a href="/add_exe_log">Exercise Log</a>
+          <a href="/see_exe_log">Profile</a>
+        </nav>
+    </header>
+    <div id="app">
+        <h1>Gym Log Telegram Web App</h1>
+        <p>This web app allows you to track your daily exercise log and basic info.</p>
+        <h4>Add or edit your basic info</h4>
+          <!-- Basic info form -->
+          <form id="basic-info-form">
+            <table>
+              <tr>
+                <th>Full Name</th>
+                <td><input type="text" name="fullName"></td>
+              </tr>
+              <tr>
+                <th>Age</th>
+                <td><input type="number" name="age"></td>
+              </tr>
+              <tr>
+                <th>Gender</th>
+                <td><input type="text" name="gender"></td>
+              </tr>
+              <tr>
+                <th>Height</th>
+                <td><input type="number" name="height"></td>
+              </tr>
+              <tr>
+                <th>Weight</th>
+                <td><input type="number" name="weight"></td>
+              </tr>
+              <tr>
+                <th>Goal</th>
+                <td><input type="text" name="goal"></td>
+              </tr>
+              <tr>
+                <th>Entry Date</th>
+                <td><input type="date" name="entryDate"></td>
+              </tr>
+              <tr>
+                <th>Update At</th>
+                <td><input type="date" name="updateAt"></td>
+              </tr>
+              <tr>
+                <th>User Name</th>
+                <td><input type="text" name="userName"></td>
+              </tr>
+            </table>
+            <input type="submit" value="Submit">
+          </form>        
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
