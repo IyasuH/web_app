@@ -34,7 +34,7 @@ def home():
 
         if user_id not in gym_member_ids:
             msg = "did not registered"
-            return render_template('home_1.html')
+            # return render_template('home.html', msg=msg)
         # user_id = request.form.get("userId")
         # user_name = request.form.get("userName")
 
