@@ -16,10 +16,10 @@ def home():
     """
     to edit perosoanl data
     """
-    if 'user_id' in request.form:
-        user_id = request.form['user_id']
-        msg ="user id is {}".format(user_id)
     msg = "did not get user_id"
+    if 'user_id' in request.form:
+        user_id = request.form.get("user_id")
+        msg ="user id is {}".format(user_id)
     return render_template('home.html', msg=msg)
 
 @app.route("/add_exe_log")
