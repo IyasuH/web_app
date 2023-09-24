@@ -1,0 +1,1 @@
+document.getElementById('webview_data').innerHTML=JSON.stringify(window.Telegram.WebApp.initDataUnsafe.user, null, 2);
