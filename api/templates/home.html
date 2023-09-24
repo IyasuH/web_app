@@ -20,7 +20,7 @@
         <h1>Gym Log Telegram Web App</h1>
         <!-- <p>This web app allows you to track your daily exercise log and basic info.</p> -->
         <p id="welcome_by_name"></p>
-        <div class="msg">{{ msg }}</div>
+        
         <h4>Add or edit your basic info</h4>
           <!-- Basic info form -->
           <form id="basic-info-form">
@@ -65,7 +65,8 @@
               </tr>
             </table>
             <input type="submit" value="Submit">
-          </form>        
+          </form>
+          <div class="msg">{{ msg }}</div>       
     </div>
     <pre><code id="webview_data"></code></pre>
     <script src="../static/scripts/index.js?v=3"></script>
