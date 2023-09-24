@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from dotenv import load_dotenv
 import datetime
 from deta import Deta
@@ -11,12 +11,16 @@ deta = Deta(DETA_KEY)
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
     """
     to edit perosoanl data
     """
-    return render_template('home.html')
+    if 'user_id' in request.form:
+        user_id = request.form['user_id']
+        msg ="user id is {}".format(user_id)
+    msg = "did not get user_id"
+    return render_template('home.html', msg=msg)
 
 @app.route("/add_exe_log")
 def add_log():
