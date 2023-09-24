@@ -26,9 +26,22 @@
           <form id="basic-info-form">
             <table>
               <tr>
-                <th>Full Name</th>
+                <th>Id</th>
                 <!-- change user_id from text type to hidden -->
-                <div id="user_id"><id="userId" input type="text" name="user_id"></div>
+                <td><div id="user_id"><input type="text" id="userId" name="user_id"></div></td>
+              </tr>
+              <tr>
+                <th>User Name</th>
+                <td><input type="text" id="userName" name="userName"></td>
+              </tr>
+            </table>
+            <input type="submit" value="Submit">
+          </form>
+
+          <form>
+            <table>
+              <tr>
+                <th>Full Name</th>
                 <td><input type="text" name="fullName"></td>
               </tr>
               <tr>
@@ -58,10 +71,6 @@
               <tr>
                 <th>Update At</th>
                 <td><input type="date" name="updateAt"></td>
-              </tr>
-              <tr>
-                <th>User Name</th>
-                <td><input type="text" name="userName"></td>
               </tr>
             </table>
             <input type="submit" value="Submit">
