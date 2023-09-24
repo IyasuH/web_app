@@ -18,8 +18,11 @@ def home():
     """
     msg = "did not get user_id"
     # if request.method == 'POST' and 'user_id' in request.form:
-    user_id = request.form.get("user_id")
-    user_name = request.form.get("userName")
+    user_id = request.form['userId']
+    user_name = request.form['userName']
+
+    # user_id = request.form.get("user_id")
+    # user_name = request.form.get("userName")
 
     msg ="user id is {} and user name {}".format(user_id, user_name)
 
