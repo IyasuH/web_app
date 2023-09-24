@@ -9,6 +9,15 @@ load_dotenv()
 DETA_KEY = os.getenv("DETA_KEY")
 deta = Deta(DETA_KEY)
 
+gym_member_db = deta.Base("User_DB")
+
+gym_members = gym_member_db.fetch().items
+gym_member_ids = []
+for gym_member in gym_members:
+    gym_member_ids.append(gym_member["id"])
+
+now = datetime.datetime.now()
+
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
@@ -20,11 +29,14 @@ def home():
     if request.method == 'POST' and 'userId' in request.form and 'userName' in request.form:
         user_id = request.form['userId']
         user_name = request.form['userName']
+        
+        msg ="user id is {} and user name {}".format(user_id, user_name)
 
+        if user_id not in gym_member_ids:
+            msg = "did not registered"
+            return render_template('home_1.html')
         # user_id = request.form.get("userId")
         # user_name = request.form.get("userName")
-
-        msg ="user id is {} and user name {}".format(user_id, user_name)
 
     return render_template('home.html', msg=msg)
 
