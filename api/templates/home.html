@@ -54,15 +54,15 @@
               </tr> -->
               <tr>
                 <th>Height</th>
-                <td><input type="number" name="height" value="{% if user %} * {{ user['height']}} {% endif %}"></td>
+                <td><input type="number" name="height" value="{% if user %} {{user['height'] | float}} {% endif %}"></td>
               </tr>
               <tr>
                 <th>Weight</th>
-                <td><input type="number" name="weight" value="{% if user %} * {{user['weight']}} {% endif %}"></td>
+                <td><input type="number" name="weight" value="{% if user %} {{user['weight'] | float}} {% endif %}"></td>
               </tr>
               <tr>
                 <th>Goal</th>
-                <td><input type="text" name="goal" value="{% if user %} * {{user['specific_goal']}} {% endif %}"></td>
+                <td><input type="text" name="goal" value="{% if user %} {{user['specific_goal'] | float}} {% endif %}"></td>
               </tr>
               <!-- <tr>
                 <th>Entry Date</th>
