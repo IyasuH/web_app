@@ -66,6 +66,7 @@ def update_personal_data():
         user_info_dict["height"] = float(request.form['height'])
         user_info_dict["weight"] = float(request.form['weight'])
         user_info_dict["specific_goal"] = request.form['goal']
+        user_info_dict["updated_at"] = datetime.date.today().strftime("%d/%m/%Y")
 
         gym_member_db.update(user_info_dict, user_id)
         msg = "updated successfully"
