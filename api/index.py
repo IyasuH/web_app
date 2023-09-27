@@ -58,7 +58,8 @@ def update_personal_data():
     """
     when submitting the update to database
     """
-    if session['user'] == True:
+    # if session['user'] == True:
+    if 'user' in session:
         user_id = session['user_id']
         # use = gym_member_db.get(user_id)
         user_info_dict=[]
