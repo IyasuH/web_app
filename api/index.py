@@ -49,7 +49,7 @@ def home():
         
             msg ="user registered"
             user = gym_member_db.get(user_id)
-            return render_template('home.html', msg=msg, user=user, weight=float(user['weight']), height=float(user['height']))
+            return render_template('home.html', msg=msg, user=user)
 
     return render_template('home.html', msg=msg)
 
@@ -61,7 +61,7 @@ def update_personal_data():
     # if session['user'] == True:
     if 'user' in session:
         user_id = session['user_id']
-        # use = gym_member_db.get(user_id)
+        user = gym_member_db.get(user_id)
         user_info_dict=[]
         user_info_dict["height"] = request.form['']
         user_info_dict["weight"] = request.form['']
@@ -69,7 +69,7 @@ def update_personal_data():
 
         gym_member_db.update(user_info_dict, user_id)
         msg = "updated successfully"
-        return render_template('home.html', msg=msg)
+        return render_template('home.html', msg=msg, user=user)
     else:
         render_template('home.html', msg='unsuccessful update (session error)')
 
