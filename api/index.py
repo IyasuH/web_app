@@ -14,7 +14,7 @@ gym_member_db = deta.Base("User_DB")
 gym_members = gym_member_db.fetch().items
 gym_member_ids = []
 for gym_member in gym_members:
-    gym_member_ids.append(gym_member["id"])
+    gym_member_ids.append(gym_member["user_id"])
 
 now = datetime.datetime.now()
 
