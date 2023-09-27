@@ -28,17 +28,17 @@
               <tr>
                 <th>Id</th>
                 <!-- change user_id from text type to hidden -->
-                <td><input type="text" id="userId" name="userId"></td>
+                <td><input readonly type="text" id="userId" name="userId"></td>
               </tr>
               <tr>
                 <th>User Name</th>
-                <td><input type="text" id="userName" name="userName"></td>
+                <td><input readonly type="text" id="userName" name="userName"></td>
               </tr>
             </table>
             <input type="submit" value="Verify">
           </form>
 
-          <form>
+          <form method="POST" action="/update_personal_data">
             <table>
               <!-- <tr>
                 <th>Full Name</th>
@@ -54,15 +54,15 @@
               </tr> -->
               <tr>
                 <th>Height</th>
-                <td><input type="number" name="height"></td>
+                <td><input type="number" name="height" value="{{ user['height']}}"></td>
               </tr>
               <tr>
                 <th>Weight</th>
-                <td><input type="number" name="weight"></td>
+                <td><input type="number" name="weight" value="{{ user['weight']}}"></td>
               </tr>
               <tr>
                 <th>Goal</th>
-                <td><input type="text" name="goal"></td>
+                <td><input type="text" name="goal" value="{{ user['specific_goal']}}"></td>
               </tr>
               <!-- <tr>
                 <th>Entry Date</th>
