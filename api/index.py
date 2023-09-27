@@ -28,14 +28,14 @@ def home():
     msg = "did not get user_id"
     if request.method == 'POST' and 'userId' in request.form and 'userName' in request.form:
         msg = "user did not register"
+        user_id = request.form['userId']
+
         if user_id in gym_member_ids:
             """
             this means user id is found in database
             """
             # let's update session here
             session['user'] = True
-            
-            user_id = request.form['userId']
             session['user_id'] = user_id
             # user_name = request.form['userName']
         
