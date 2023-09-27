@@ -49,7 +49,7 @@ def home():
         
             msg ="user registered"
             user = gym_member_db.get(user_id)
-            return render_template('home.html', msg=msg, user=user)
+            return render_template('home.html', msg=msg, user=user, weight=float(user['weight'], height=float(user['height'])))
 
     return render_template('home.html', msg=msg)
 
