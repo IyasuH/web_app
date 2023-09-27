@@ -4,6 +4,9 @@ import datetime
 from deta import Deta
 import os
 
+import string
+import secrets
+
 load_dotenv()
 
 DETA_KEY = os.getenv("DETA_KEY")
@@ -19,6 +22,11 @@ for gym_member in gym_members:
 now = datetime.datetime.now()
 
 app = Flask(__name__)
+
+chars = string.ascii_letters + string.digits+string.punctuation
+key = ''.join(secrets.choice(chars) for _ in range(32))
+
+app.secret_key = key
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
