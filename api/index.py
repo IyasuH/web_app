@@ -63,15 +63,15 @@ def update_personal_data():
         user_id = session['user_id']
         user = gym_member_db.get(user_id)
         user_info_dict=[]
-        user_info_dict["height"] = request.form['']
-        user_info_dict["weight"] = request.form['']
-        user_info_dict["specific_goal"] = request.form['']
+        user_info_dict["height"] = request.form['height']
+        user_info_dict["weight"] = request.form['weight']
+        user_info_dict["specific_goal"] = request.form['goal']
 
         gym_member_db.update(user_info_dict, user_id)
         msg = "updated successfully"
         return render_template('home.html', msg=msg, user=user)
     else:
-        render_template('home.html', msg='unsuccessful update (session error)')
+        return render_template('home.html', msg='unsuccessful update (session error)')
 
 @app.route("/add_exe_log")
 def add_log():
