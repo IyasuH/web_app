@@ -35,6 +35,16 @@ def format_date(date, format_string):
 
 app.jinja_env.filters['strftime'] = format_date
 
+
+@app.route('/signup/')
+def signup():
+    """
+    where user request to signup and his request will be sent to admin's 
+    - if they approve it his data will be signed in the main db table
+    - if not his data will be stored in separte db table
+    """
+    
+
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     msg = ''
@@ -74,14 +84,12 @@ def update_personal_data():
         updateHeight = float(request.form['heightCM'])
         updateWeight = float(request.form['weightCM'])
         updateGoal = str(request.form['goal'])
+        updateUserName = str(request.form['fullName'])
 
-        print(updateHeight)
-        print(type(updateHeight))
-        print(type(updateGoal))
-
+        user_info_dict["full_name"] = updateUserName
         user_info_dict["height"] = updateHeight
         user_info_dict["weight"] = updateWeight
-        user_info_dict["specific_goal"] = updateGoal
+        user_info_dict["main_goal"] = updateGoal
 
         user_info_dict["updated_at"] = datetime.date.today().strftime("%d/%m/%Y")
 
