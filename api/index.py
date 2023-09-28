@@ -69,10 +69,10 @@ def update_personal_data():
         updateWeight = request.form['weightCM']
 
         print(updateHeight)
-        print(type(updateHeight))
+        print(type(float(updateHeight)))
 
-        user_info_dict["height"] = float(updateHeight)
-        user_info_dict["weight"] = float(updateWeight)
+        # user_info_dict["height"] = float(updateHeight)
+        # user_info_dict["weight"] = float(updateWeight)
         user_info_dict["specific_goal"] = request.form['goal']
         user_info_dict["updated_at"] = datetime.date.today().strftime("%d/%m/%Y")
 
