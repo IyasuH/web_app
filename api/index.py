@@ -49,6 +49,9 @@ def home():
     """
     if 'loggedin' in session:
         user = gym_member_db.get(session['user_id'])
+        print(user)
+        print(type(user))
+        print(user[0])
         return render_template('home.html', user=user)
     return redirect(url_for('login'))
 
@@ -62,17 +65,19 @@ def update_personal_data():
         # user = gym_member_db.get(user_id)
         user_info_dict=[]
 
-        print(request.form['heightCM'])
-        print(type(request.form['heightCM']))
         updateHeight = request.form['heightCM']
         updateWeight = request.form['weightCM']
+
+        print(updateHeight)
+        print(type(updateHeight))
+
         user_info_dict["height"] = float(updateHeight)
         user_info_dict["weight"] = float(updateWeight)
         user_info_dict["specific_goal"] = request.form['goal']
         user_info_dict["updated_at"] = datetime.date.today().strftime("%d/%m/%Y")
 
         gym_member_db.update(user_info_dict, user_id)
-        
+
         return redirect(url_for('home'))
     else: 
         return redirect(url_for('login'))
