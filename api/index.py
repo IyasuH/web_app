@@ -67,7 +67,7 @@ def update_personal_data():
 
         updateHeight = float(request.form['heightCM'])
         updateWeight = float(request.form['weightCM'])
-        updateGoal = string(request.form['goal'])
+        updateGoal = str(request.form['goal'])
 
         print(updateHeight)
         print(type(updateHeight))
