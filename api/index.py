@@ -52,35 +52,14 @@ def home():
         return render_template('home.html', user=user)
     return redirect(url_for('login'))
 
-    # msg = "did not get user_id"
-    # if request.method == 'POST' and 'userId' in request.form and 'userName' in request.form:
-    #     msg = "user did not register"
-    #     user_id = request.form['userId']
-
-    #     if user_id in gym_member_ids:
-    #         """
-    #         this means user id is found in database
-    #         """
-    #         # let's update session here
-    #         session['user'] = True
-    #         session['user_id'] = user_id
-    #         # user_name = request.form['userName']
-        
-    #         msg ="user registered"
-    #         user = gym_member_db.get(user_id)
-    #         return render_template('home.html', msg=msg, user=user)
-
-    # return render_template('home.html', msg=msg)
-
 @app.route('/update_personal_data', methods=['POST'])
 def update_personal_data():
     """
     when submitting the update to database
     """
-    # if session['user'] == True:
-    if 'user' in session:
+    if 'loggedin' in session:
         user_id = session['user_id']
-        user = gym_member_db.get(user_id)
+        # user = gym_member_db.get(user_id)
         user_info_dict=[]
         user_info_dict["height"] = request.form['heightCM']
         user_info_dict["weight"] = request.form['weightCM']
@@ -88,10 +67,10 @@ def update_personal_data():
         user_info_dict["updated_at"] = datetime.date.today().strftime("%d/%m/%Y")
 
         gym_member_db.update(user_info_dict, user_id)
-        msg = "updated successfully"
-        return render_template('home.html', msg=msg, user=user)
-    else:
-        return render_template('home.html', msg='unsuccessful update (session error)')
+        
+        return redirect(url_for('home'))
+    else: 
+        return redirect(url_for('login'))
 
 @app.route("/add_exe_log")
 def add_log():
