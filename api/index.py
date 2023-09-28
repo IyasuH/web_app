@@ -63,7 +63,7 @@ def update_personal_data():
     if 'loggedin' in session:
         user_id = session['user_id']
         # user = gym_member_db.get(user_id)
-        user_info_dict=[]
+        user_info_dict={}
 
         updateHeight = float(request.form['heightCM'])
         updateWeight = float(request.form['weightCM'])
