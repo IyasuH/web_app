@@ -61,12 +61,13 @@ def update_personal_data():
         user_id = session['user_id']
         # user = gym_member_db.get(user_id)
         user_info_dict=[]
-        
+
         print(request.form['heightCM'])
         print(type(request.form['heightCM']))
-
-        user_info_dict["height"] = request.form['heightCM']
-        user_info_dict["weight"] = request.form['weightCM']
+        updateHeight = request.form['heightCM']
+        updateWeight = request.form['weightCM']
+        user_info_dict["height"] = float(updateHeight)
+        user_info_dict["weight"] = float(updateWeight)
         user_info_dict["specific_goal"] = request.form['goal']
         user_info_dict["updated_at"] = datetime.date.today().strftime("%d/%m/%Y")
 
