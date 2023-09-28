@@ -51,7 +51,7 @@ def home():
         user = gym_member_db.get(session['user_id'])
         print(user)
         print(type(user))
-        print(user[0])
+        # print(user[0])
         return render_template('home.html', user=user)
     return redirect(url_for('login'))
 
