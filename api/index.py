@@ -28,12 +28,14 @@ key = ''.join(secrets.choice(chars) for _ in range(32))
 
 app.secret_key = key
 
-def format_date(date, format_string):
-    if isinstance(date, str):
-        date = datetime.datetime.strptime(date, '%m/%d/%Y')
-    return date.strftime(format_string)
+app.config["SESSION_PERMANENT"] = False # so the session has a default time limit which expires
 
-app.jinja_env.filters['strftime'] = format_date
+# def format_date(date, format_string):
+#     if isinstance(date, str):
+#         date = datetime.datetime.strptime(date, '%m/%d/%Y')
+#     return date.strftime(format_string)
+
+# app.jinja_env.filters['strftime'] = format_date
 
 
 @app.route('/signup/')
