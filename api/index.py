@@ -36,14 +36,14 @@ app.config["SESSION_PERMANENT"] = False # so the session has a default time limi
 
 class Exe_log_table(Table):
     user_id = Col('user_id')
-    date = Col('date_worked')
+    date_worked = Col('date_worked')
     exercise_name = Col('exercise_name')
-    equipemnt_used = Col('equipment_used')
-    reps = Col('number_of_reps')
-    cycles = Col('number_of_cycles')
-    duration = Col('exercise_duration')
-    felling = Col('feeling')
-    add_info = Col('additional_info')
+    equipment_used = Col('equipment_used')
+    number_of_reps = Col('number_of_reps')
+    number_of_cycles = Col('number_of_cycles')
+    exercise_duration = Col('exercise_duration')
+    feeling = Col('feeling')
+    additional_info = Col('additional_info')
 
 # def format_date(date, format_string):
 #     if isinstance(date, str):
