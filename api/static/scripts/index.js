@@ -1,4 +1,4 @@
-userData = window.Telegram.WebApp.initDataUnsafe.user;
+userData = window.Telegram.WebApp.initData.user;
 
 document.getElementById("userId").value = userData.id;
 document.getElementById('userName').value = userData.username;
