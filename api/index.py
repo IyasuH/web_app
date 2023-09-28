@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from dotenv import load_dotenv
 import datetime
+from flask_table import Table, Col, ButtonCol, DatetimeCol, DateCol
 from deta import Deta
 import os
 
@@ -19,6 +20,8 @@ gym_member_ids = []
 for gym_member in gym_members:
     gym_member_ids.append(gym_member["user_id"])
 
+log_db = deta.Base("Log_DB")
+
 now = datetime.datetime.now()
 
 app = Flask(__name__)
@@ -29,6 +32,18 @@ key = ''.join(secrets.choice(chars) for _ in range(32))
 app.secret_key = key
 
 app.config["SESSION_PERMANENT"] = False # so the session has a default time limit which expires
+
+
+class Exe_log_table(Table):
+    user_id = Col('user_id')
+    date = Col('date_worked')
+    exercise_name = Col('exercise_name')
+    equipemnt_used = Col('equipment_used')
+    reps = Col('number_of_reps')
+    cycles = Col('number_of_cycles')
+    duration = Col('exercise_duration')
+    felling = Col('feeling')
+    add_info = Col('additional_info')
 
 # def format_date(date, format_string):
 #     if isinstance(date, str):
@@ -107,14 +122,36 @@ def add_log():
     to add exercise log of user
     - if users telegram userid is registered
     """
-    return render_template("add_logg.html")
+    if 'loggedin' in session:
+        if request.method == 'POST':
+            log_info_dict = {}
+
+            log_info_dict["body_area"] = request.form['bodyOfArea']
+            log_info_dict["exercise_name"] = request.form['exerciseName']
+            log_info_dict["equipment_used"] = request.form['equipmentUsed']
+            log_info_dict["number_of_reps"] = request.form['numberOfReps']
+            log_info_dict["number_of_cycles"] = request.form['numberOfCycle']
+            log_info_dict["exercise_duration"] = request.form['exerciseDuration']
+            log_info_dict["feeling"] = request.form['feeling']
+            log_info_dict["date_worked"] = request.form['dateWorked']
+            log_info_dict["additional_info"] = request.form['addInfo']
+
+            log_info_dict["user_id"] = session['user_id']
+
+            log_db.put(log_info_dict)
+        return render_template("add_logg.html")
+    else:
+        return redirect(url_for('login'))
 
 @app.route('/see_exe_log')
 def see_log():
     """
     to see exercise log
     """
-    return render_template('see_logg.html')
+    user_exe_log = log_db.fetch({"user_id" : session['user_id']}).items
+    table_exe_log = Exe_log_table(user_exe_log)
+    table_exe_log.border = True
+    return render_template('see_logg.html', exe_table=table_exe_log)
 
 if __name__ == "__main__":
     app.run(debug=True, port=7070)

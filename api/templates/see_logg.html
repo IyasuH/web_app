@@ -19,7 +19,12 @@
         <td>3</td>
         <td>17/09/2023</td>
     </tr>
-    {% for exercise_log in exercise_logs %}
+    <br>
+    <br>
+    <section>
+      {{ exe_table }}
+    </section>
+    <!-- {% for exercise_log in exercise_logs %}
     <tr>
       <td>{{ exercise_log.body_of_area }}</td>
       <td>{{ exercise_log.performed_exercise_name }}</td>
@@ -28,7 +33,7 @@
       <td>{{ exercise_log.total_cycle_of_reptation }}</td>
       <td>{{ exercise_log.date_worked }}</td>
     </tr>
-    {% endfor %}
+    {% endfor %} -->
   </table>
   </div>
   {% endblock %}

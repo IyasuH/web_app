@@ -8,27 +8,62 @@
             <table>
               <tr>
                 <th>Body of Area</th>
-                <td><input type="text" name="bodyOfArea"></td>
+                <td><input type="text" name="bodyOfArea" placeholder="e.g Biceps" required></td>
               </tr>
+
               <tr>
-                <th>Performed Exercise Name</th>
-                <td><input type="text" name="performedExerciseName"></td>
+                <th>Exercise Name</th>
+                <td><input type="text" name="exerciseName" placeholder="e.g normal push ups" required></td>
               </tr>
+
               <tr>
                 <th>Equipment Used(be specific)</th>
-                <td><input type="text" name="equipmentUsed"></td>
+                <td><input type="text" name="equipmentUsed" placeholder="e.g None" required></td>
               </tr>
+
               <tr>
                 <th>Number of Reps</th>
-                <td><input type="number" name="numberOfReps"></td>
+                <td><input type="number" name="numberOfReps" placeholder="e.g 10"></td>
               </tr>
+
               <tr>
-                <th>Total Cycle of Reptation</th>
-                <td><input type="number" name="totalCycleOfReptation"></td>
+                <th>Number of Cycles/Number Rounds</th>
+                <td><input type="number" name="numberOfCycle" placeholder="e.g 3"></td>
               </tr>
+
+              <tr>
+                <th>Exercise Duration (in min)</th>
+                <td><input type="text" name="exerciseDuration" placeholder="e.g 12"></td>
+              </tr>
+
+              <tr>
+                <th>Feeling</th>
+                <td>
+                  <input type="radio" name="feeling" id="too_easy" value="too easy">
+                  <label for="too_easy">Too Easy</label>
+                  <br>
+                  <input type="radio" name="feeling" id="alittle_easy" value="a little easy">
+                  <label for="alittle_easy">A Little Easy</label>
+                  <br>
+                  <input type="radio" name="feeling" id="just_right" value="just right">
+                  <label for="just_right">Just Right</label>
+                  <br>
+                  <input type="radio" name="feeling" id="alittle_hard" value="a little hard">
+                  <label for="alittle_hard">A Little Hard</label>
+                  <br>
+                  <input type="radio" name="feeling" id="too_hard" value="too hard">
+                  <label for="too_hard">Too Hard</label>
+                </td>
+              </tr>
+
               <tr>
                 <th>Date Worked</th>
                 <td><input type="date" name="dateWorked"></td>
+              </tr>
+
+              <tr>
+                <th>Additional Info</th>
+                <td><input type="text" name="addInfo" placeholder="e.g the last round was challenging"></td>
               </tr>
             </table>
             <input type="submit" value="Submit">
