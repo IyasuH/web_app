@@ -28,6 +28,12 @@ key = ''.join(secrets.choice(chars) for _ in range(32))
 
 app.secret_key = key
 
+def format_date(date, format_string):
+    if isinstance(date, str):
+        date = datetime.datetime(date, '%d/%m/%Y')
+    return date.strftime(format_string)
+
+app.jinja_env.filters['strftime'] = format_date
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
