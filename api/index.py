@@ -32,6 +32,7 @@ key = ''.join(secrets.choice(chars) for _ in range(32))
 app.secret_key = key
 
 app.config["SESSION_PERMANENT"] = False # so the session has a default time limit which expires
+app.config['PERMANENT_SESSION_LIFETIME'] = 1800
 
 
 class Exe_log_table(Table):
@@ -116,13 +117,14 @@ def update_personal_data():
     else: 
         return redirect(url_for('login'))
 
-@app.route("/add_exe_log")
+@app.route("/add_exe_log", methods=['GET', 'POST'])
 def add_log():
     """
     to add exercise log of user
     - if users telegram userid is registered
     """
     if 'loggedin' in session:
+        msg = ''
         if request.method == 'POST':
             log_info_dict = {}
 
@@ -137,9 +139,9 @@ def add_log():
             log_info_dict["additional_info"] = request.form['addInfo']
 
             log_info_dict["user_id"] = session['user_id']
-
+            msg = 'New exercise data saved'
             log_db.put(log_info_dict)
-        return render_template("add_logg.html")
+        return render_template("add_logg.html", msg=msg)
     else:
         return redirect(url_for('login'))
 
