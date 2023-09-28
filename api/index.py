@@ -30,7 +30,7 @@ app.secret_key = key
 
 def format_date(date, format_string):
     if isinstance(date, str):
-        date = datetime.datetime.strptime(date, '%d/%m/%Y')
+        date = datetime.datetime.strptime(date, '%m/%d/%Y')
     return date.strftime(format_string)
 
 app.jinja_env.filters['strftime'] = format_date

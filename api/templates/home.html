@@ -15,12 +15,12 @@
 
               <tr>
                 <th>DoB</th>
-                <td><input required type="date" name="doB" value="{{ user['dob'] | strftime('%d/%m/%Y')}}"></td>
+                <td><input required type="date" name="doB" value="{{ user['dob'] | strftime('%m/%d/%Y')}}"></td>
               </tr>
 
               <tr>
                 <th>Entry Date</th>
-                <td><input required type="date" name="entryDate" value="{{ user['entry_date'] | strftime('%d/%m/%Y')}}"></td>
+                <td><input required type="date" name="entryDate" value="{{ user['entry_date'] | strftime('%m/%d/%Y')}}"></td>
               </tr>
               
               <tr>
