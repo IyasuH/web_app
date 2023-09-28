@@ -9,15 +9,15 @@
             <table>
               <tr>
                 <th>Height</th>
-                <td><input type="number" step="0.01" name="heightCM" value="{{ user['height'] }}"></td>
+                <td><input required type="number" step="0.01" name="heightCM" value="{{ user['height'] | float }}"></td>
               </tr>
               <tr>
                 <th>Weight</th>
-                <td><input type="number" step="0.01" name="weightCM" value="{{ user['weight'] }}"></td>
+                <td><input required type="number" step="0.01" name="weightCM" value="{{ user['weight'] | float }}"></td>
               </tr>
               <tr>
                 <th>Goal</th>
-                <td><input type="text" name="goal" value="{{user['specific_goal'] }}"></td>
+                <td><input required type="text" name="goal" value="{{user['specific_goal'] }}"></td>
               </tr>
             </table>
             <input type="submit" value="Submit">
