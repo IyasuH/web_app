@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for
 from dotenv import load_dotenv
 import datetime
 from deta import Deta
@@ -28,30 +28,49 @@ key = ''.join(secrets.choice(chars) for _ in range(32))
 
 app.secret_key = key
 
+
+@app.route('/login/', methods=['GET', 'POST'])
+def login():
+    msg = ''
+    if request.method == 'POST' and 'userId' in request.form:
+        user_id = request.form['userId']
+        if user_id in gym_member_ids:
+            session['loggedin'] = True
+            session['user_id'] = user_id
+            return redirect(url_for('home'))
+        else:
+            msg = 'User is not registered'
+    return render_template('login.html', msg=msg)
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     """
-    to edit perosoanl data
+    to see and edit perosoanl data
     """
-    msg = "did not get user_id"
-    if request.method == 'POST' and 'userId' in request.form and 'userName' in request.form:
-        msg = "user did not register"
-        user_id = request.form['userId']
+    if 'loggedin' in session:
+        user = gym_member_db.get(session['user_id'])
+        return render_template('home.html', user=user)
+    return redirect(url_for('login'))
 
-        if user_id in gym_member_ids:
-            """
-            this means user id is found in database
-            """
-            # let's update session here
-            session['user'] = True
-            session['user_id'] = user_id
-            # user_name = request.form['userName']
+    # msg = "did not get user_id"
+    # if request.method == 'POST' and 'userId' in request.form and 'userName' in request.form:
+    #     msg = "user did not register"
+    #     user_id = request.form['userId']
+
+    #     if user_id in gym_member_ids:
+    #         """
+    #         this means user id is found in database
+    #         """
+    #         # let's update session here
+    #         session['user'] = True
+    #         session['user_id'] = user_id
+    #         # user_name = request.form['userName']
         
-            msg ="user registered"
-            user = gym_member_db.get(user_id)
-            return render_template('home.html', msg=msg, user=user)
+    #         msg ="user registered"
+    #         user = gym_member_db.get(user_id)
+    #         return render_template('home.html', msg=msg, user=user)
 
-    return render_template('home.html', msg=msg)
+    # return render_template('home.html', msg=msg)
 
 @app.route('/update_personal_data', methods=['POST'])
 def update_personal_data():

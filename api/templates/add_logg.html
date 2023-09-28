@@ -1,22 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gym Add Logg</title>
-    <link rel="stylesheet" href="../static/styles/style.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-</head>
-<body>
-    <header>
-      <h1>Dere GYM</h1>
-      <nav>
-        <a href="/">Home</a>
-        <a href="/add_exe_log">Exercise Log</a>
-        <a href="/see_exe_log">Profile</a>
-      </nav>
-    </header>
-
+    {% extends "layout.html" %}
+    {% block gym %}
     <div id="app">
         <h1>Gym Log Telegram Web App</h1>
         <p>Enter your exercise info</p>
@@ -51,6 +34,4 @@
             <input type="submit" value="Submit">
           </form>
     </div>
-    <script src="../static/scripts/index.js"></script>
-</body>
-</html>
+    {% endblock %}
