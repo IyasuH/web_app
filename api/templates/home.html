@@ -7,14 +7,32 @@
         <h4>Add or edit your basic info</h4>
           <form method="POST" action="/update_personal_data">
             <table>
+
+              <tr>
+                <th>Full Name</th>
+                <td><input required type="text" name="fullName" value="{{ user['full_name'] }}"></td>
+              </tr>
+
+              <tr>
+                <th>DoB</th>
+                <td><input required type="date" name="doB" value="{{ user['dob'] }}"></td>
+              </tr>
+
+              <tr>
+                <th>Entry Date</th>
+                <td><input required type="date" name="entryDate" value="{{ user['entry_date'] }}"></td>
+              </tr>
+              
               <tr>
                 <th>Height</th>
                 <td><input required type="number" step="0.01" name="heightCM" value="{{ user['height'] | float }}"></td>
               </tr>
+
               <tr>
                 <th>Weight</th>
                 <td><input required type="number" step="0.01" name="weightCM" value="{{ user['weight'] | float }}"></td>
               </tr>
+
               <tr>
                 <th>Goal</th>
                 <td><input required type="text" name="goal" value="{{user['specific_goal'] }}"></td>
