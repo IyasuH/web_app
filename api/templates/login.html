@@ -12,11 +12,16 @@
     <h2>Login</h2>
     <p>{{ msg }}</p>
     <form action="/login" method="post">
-        <p>User ID</p>
-        <input readonly type="text" name="userId" id="userId">
-
-        <p>User Name</p>
-        <input  readonly type="text" name="userName" id="userName">
+        <table>
+            <tr>
+                <th>User Id</th>
+                <td><input readonly type="text" id="userId" name="userId"></td>
+            </tr>
+            <tr>
+                <th>User Name</th>
+                <td><input readonly type="text" id="userName" name="userName"></td>
+            </tr>
+        </table>
         <input type="submit" value="Login using Telegram">
     </form>
     
