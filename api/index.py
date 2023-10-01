@@ -94,7 +94,7 @@ def login():
             """
             # msg = 'User is not registered'
             return render_template("signup.html")
-    # return render_template('login.html', msg=msg)
+    return render_template('login.html', msg=msg)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
