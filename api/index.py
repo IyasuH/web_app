@@ -140,6 +140,7 @@ def add_log():
 
             log_info_dict["user_id"] = session['user_id']
             msg = 'New exercise data saved'
+            
             log_db.put(log_info_dict)
         return render_template("add_logg.html", msg=msg)
     else:
@@ -150,10 +151,14 @@ def see_log():
     """
     to see exercise log
     """
-    user_exe_log = log_db.fetch({"user_id" : session['user_id']}).items
-    table_exe_log = Exe_log_table(user_exe_log)
-    table_exe_log.border = True
-    return render_template('see_logg.html', exe_table=table_exe_log)
+    if 'loggedin' in session:
+        user_id = session["user_id"]
+        user_exe_log = log_db.fetch({"user_id" : user_id}).items
+        table_exe_log = Exe_log_table(user_exe_log)
+        table_exe_log.border = True
+        return render_template('see_logg.html', exe_table=table_exe_log)
+    else:
+        return redirect(url_for('login'))
 
 if __name__ == "__main__":
     app.run(debug=True, port=7070)
