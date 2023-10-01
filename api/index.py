@@ -20,6 +20,15 @@ gym_member_ids = []
 for gym_member in gym_members:
     gym_member_ids.append(gym_member["user_id"])
 
+
+waiting_db = deta.Base("Waiting_DB")
+
+waiting_members = waiting_db.fetch().items
+waiting_member_ids = []
+for waiting_member in waiting_members:
+    waiting_member_ids.append(waiting_member["user_id"])
+
+
 log_db = deta.Base("Log_DB")
 
 now = datetime.datetime.now()
@@ -72,9 +81,20 @@ def login():
             session['loggedin'] = True
             session['user_id'] = user_id
             return redirect(url_for('home'))
+        
+        elif user_id in waiting_member_ids:
+            """
+            user already in waiting list
+            """
+            return render_template('waiting.html')
+        
         else:
-            msg = 'User is not registered'
-    return render_template('login.html', msg=msg)
+            """
+            user does not request approval
+            """
+            # msg = 'User is not registered'
+            return render_template("signup.html")
+    # return render_template('login.html', msg=msg)
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
