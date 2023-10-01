@@ -160,6 +160,14 @@ def update_personal_data():
         user_info_dict["weight"] = updateWeight
         user_info_dict["main_goal"] = updateGoal
 
+        user_info_dict["fat_percent"] = float(request.form["fatPercent"])
+        user_info_dict["waist_circumference"] = float(request.form["waistCircum"])
+        user_info_dict["hip_circumference"] = float(request.form["hipCircum"])
+        user_info_dict["calf_circumference"] = float(request.form["calfCircum"])
+        user_info_dict["chest_width"] = float(request.form["chestWidth"])
+        user_info_dict["shoulder_width"] = float(request.form["shoulderWidth"])
+        user_info_dict["bicep_circumference"] = float(request.form["bicepCircum"])
+
         user_info_dict["updated_at"] = datetime.date.today().strftime("%d/%m/%Y")
 
         gym_member_db.update(user_info_dict, user_id)
