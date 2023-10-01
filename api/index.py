@@ -29,7 +29,7 @@ app = Flask(__name__)
 chars = string.ascii_letters + string.digits+string.punctuation
 key = ''.join(secrets.choice(chars) for _ in range(32))
 
-app.secret_key = key
+app.secret_key = DETA_KEY # 
 
 # app.config["SESSION_PERMANENT"] = True # so the session has a default time limit which expires
 # app.config['PERMANENT_SESSION_LIFETIME'] = 3600 # 60 min
