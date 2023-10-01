@@ -70,7 +70,7 @@ def signup():
     - if they approve it his data will be signed in the main db table
     - if not his data will be stored in separte db table
     """
-    
+
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
@@ -95,6 +95,37 @@ def login():
             # msg = 'User is not registered'
             return render_template("signup.html")
     return render_template('login.html', msg=msg)
+
+@app.route('/request_approval', methods=['GET', 'POST'])
+def request_approval():
+    if request.method == 'POST':
+        waiting_dict = {}
+
+        waiting_dict["first_name"] = request.form['firstName']
+        waiting_dict["last_name"] = request.form['lastName']
+        waiting_dict["user_name"] = request.form['userName']
+        waiting_dict["user_id"] = request.form['userId']
+        waiting_dict["is_bot"] = bool(request.form['isBot'])
+        waiting_dict["allows_write"] = True
+        waiting_dict["requested_at"] = datetime.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
+        waiting_dict["approved"] = True
+        waiting_dict["key"] = request.form['userId']
+
+        waiting_db.put(waiting_dict)
+
+    return render_template("signup.html")
+    # else:
+        # return redirect(url_for())
+
+        # user_id = request.form['userId']
+        # user_name = request.form['userName']
+        # first_name = request.form['firstName']
+        # last_name = request.form['lastName']
+        # is_bot = bool(request.form['isBot'])
+        # allows_write = True
+        # requested_at = datetime.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
+        # approved = True
+        
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
