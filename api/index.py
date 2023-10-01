@@ -106,9 +106,9 @@ def request_approval():
         waiting_dict["user_name"] = request.form['userName']
         waiting_dict["user_id"] = request.form['userId']
         waiting_dict["is_bot"] = bool(request.form['isBot'])
-        waiting_dict["allows_write"] = True
+        waiting_dict["allows_write"] = bool(request.form['allowWrite'])
         waiting_dict["requested_at"] = datetime.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
-        waiting_dict["approved"] = True
+        waiting_dict["approved"] = False
         waiting_dict["key"] = request.form['userId']
 
         waiting_db.put(waiting_dict)
