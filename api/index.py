@@ -66,7 +66,7 @@ def signup():
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
     msg = ''
-    if request.method == 'POST' and 'userId' in request.form:
+    if 'userId' in request.form:
         user_id = request.form['userId']
         if user_id in gym_member_ids:
             session['loggedin'] = True
