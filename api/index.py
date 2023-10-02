@@ -70,7 +70,7 @@ def signup():
     - if they approve it his data will be signed in the main db table
     - if not his data will be stored in separte db table
     """
-
+    
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
