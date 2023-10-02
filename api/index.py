@@ -77,6 +77,10 @@ def login():
     msg = ''
     if 'userId' in request.form:
         user_id = request.form['userId']
+        
+        print('members id list: {}', gym_member_ids)
+        print('waiting_id list: {}', waiting_member_ids)
+
         if user_id in gym_member_ids:
             session['loggedin'] = True
             session['user_id'] = user_id
@@ -112,7 +116,8 @@ def request_approval():
         waiting_dict["key"] = request.form['userId']
 
         waiting_db.put(waiting_dict)
-
+        # here i have to return to login so the user can try to login after sending their request for approval
+        return redirect(url_for('login'))
     return render_template("signup.html")
     # else:
         # return redirect(url_for())
