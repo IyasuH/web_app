@@ -14,19 +14,25 @@ DETA_KEY = os.getenv("DETA_KEY")
 deta = Deta(DETA_KEY)
 
 gym_member_db = deta.Base("User_DB")
-
-gym_members = gym_member_db.fetch().items
 gym_member_ids = []
-for gym_member in gym_members:
-    gym_member_ids.append(gym_member["user_id"])
+
+def load_member_list():
+    gym_members = gym_member_db.fetch().items
+    gym_member_ids = []
+    for gym_member in gym_members:
+        gym_member_ids.append(gym_member["user_id"])
 
 
 waiting_db = deta.Base("Waiting_DB")
-
-waiting_members = waiting_db.fetch().items
 waiting_member_ids = []
-for waiting_member in waiting_members:
-    waiting_member_ids.append(waiting_member["user_id"])
+
+def load_waiting_list():
+    # to load waiting_member ids
+    waiting_member_ids = []
+    waiting_members = waiting_db.fetch().items
+    
+    for waiting_member in waiting_members:
+        waiting_member_ids.append(waiting_member["user_id"])
 
 
 log_db = deta.Base("Log_DB")
@@ -41,7 +47,7 @@ key = ''.join(secrets.choice(chars) for _ in range(32))
 app.secret_key = DETA_KEY # 
 
 app.config["SESSION_PERMANENT"] = True # so the session has a default time limit which expires
-app.config['PERMANENT_SESSION_LIFETIME'] = 600 # 10 min
+app.config['PERMANENT_SESSION_LIFETIME'] = 1200 # 20 min
 
 
 class Exe_log_table(Table):
@@ -62,6 +68,8 @@ class Exe_log_table(Table):
 
 # app.jinja_env.filters['strftime'] = format_date
 
+load_member_list()
+load_waiting_list()
 
 @app.route('/signup/')
 def signup():
@@ -77,9 +85,12 @@ def login():
     msg = ''
     if 'userId' in request.form:
         user_id = request.form['userId']
-        
-        print('members id list: {}', gym_member_ids)
-        print('waiting_id list: {}', waiting_member_ids)
+
+        load_member_list()
+        load_waiting_list()
+
+        # print('members id list: {}', gym_member_ids)
+        # print('waiting_id list: {}', waiting_member_ids)
 
         if user_id in gym_member_ids:
             session['loggedin'] = True
@@ -90,7 +101,9 @@ def login():
             """
             user already in waiting list
             """
-            return render_template('waiting.html')
+            user = waiting_db.get(user_id)
+            msg = "Hi {} 👋, approval is sent to admin please be patient 😊.".format(user['first_name'])
+            return render_template('waiting.html', msg=msg)
         
         else:
             """
@@ -116,21 +129,10 @@ def request_approval():
         waiting_dict["key"] = request.form['userId']
 
         waiting_db.put(waiting_dict)
-        # here i have to return to login so the user can try to login after sending their request for approval
+        # here let's reload waiting_id list and return to login
+        load_waiting_list()
         return redirect(url_for('login'))
     return render_template("signup.html")
-    # else:
-        # return redirect(url_for())
-
-        # user_id = request.form['userId']
-        # user_name = request.form['userName']
-        # first_name = request.form['firstName']
-        # last_name = request.form['lastName']
-        # is_bot = bool(request.form['isBot'])
-        # allows_write = True
-        # requested_at = datetime.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
-        # approved = True
-        
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
