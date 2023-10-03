@@ -89,8 +89,8 @@ def login():
         load_member_list()
         load_waiting_list()
 
-        # print('members id list: {}', gym_member_ids)
-        # print('waiting_id list: {}', waiting_member_ids)
+        print('members id list: {}', gym_member_ids)
+        print('waiting_id list: {}', waiting_member_ids)
 
         if user_id in gym_member_ids:
             session['loggedin'] = True
