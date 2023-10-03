@@ -14,7 +14,7 @@ DETA_KEY = os.getenv("DETA_KEY")
 deta = Deta(DETA_KEY)
 
 gym_member_db = deta.Base("User_DB")
-gym_member_ids = []
+# gym_member_ids = []
 
 def load_member_list():
     gym_members = gym_member_db.fetch().items
@@ -22,9 +22,10 @@ def load_member_list():
     for gym_member in gym_members:
         gym_member_ids.append(gym_member["user_id"])
 
+    return gym_member_ids
 
 waiting_db = deta.Base("Waiting_DB")
-waiting_member_ids = []
+# waiting_member_ids = []
 
 def load_waiting_list():
     # to load waiting_member ids
@@ -33,6 +34,8 @@ def load_waiting_list():
     
     for waiting_member in waiting_members:
         waiting_member_ids.append(waiting_member["user_id"])
+
+    return waiting_member_ids
 
 
 log_db = deta.Base("Log_DB")
@@ -68,7 +71,9 @@ class Exe_log_table(Table):
 
 # app.jinja_env.filters['strftime'] = format_date
 
-load_member_list()
+gym_member_ids = load_member_list()
+waiting_member_ids = load_waiting_list()
+
 load_waiting_list()
 
 @app.route('/signup/')
@@ -85,9 +90,9 @@ def login():
     msg = ''
     if 'userId' in request.form:
         user_id = request.form['userId']
-
-        load_member_list()
-        load_waiting_list()
+        # to reload 
+        gym_member_ids = load_member_list()
+        waiting_member_ids = load_waiting_list()
 
         print('members id list: {}', gym_member_ids)
         print('waiting_id list: {}', waiting_member_ids)
