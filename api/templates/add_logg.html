@@ -1,9 +1,9 @@
     {% extends "layout.html" %}
     {% block gym %}
     <div id="app">
-        <a href="/add_treadmill_log">Log Treadmill Exercise</a>
         <!-- <h1>Gym Log Telegram Web App</h1> -->
         <p>Enter your exercise info</p>
+        <a href="/add_treadmill_log">Log Treadmill Exercise</a>
         {{ msg }}
         <!-- Exercise log form -->        
         <form id="exercise-log-form" method="POST" action="/add_exe_log">
