@@ -14,6 +14,8 @@ DETA_KEY = os.getenv("DETA_KEY")
 deta = Deta(DETA_KEY)
 
 gym_member_db = deta.Base("User_DB")
+
+change_log_db = deta.Base("Change_Log_DB")
 # gym_member_ids = []
 
 def load_member_list():
@@ -39,6 +41,8 @@ def load_waiting_list():
 
 
 log_db = deta.Base("Log_DB")
+
+treadmill_db = deta.Base("Treadmill_DB")
 
 now = datetime.datetime.now()
 
@@ -151,6 +155,7 @@ def home():
         # print(user[0])
         return render_template('home.html', user=user)
     return redirect(url_for('login'))
+    
 
 @app.route('/update_personal_data', methods=['POST'])
 def update_personal_data():
@@ -161,31 +166,58 @@ def update_personal_data():
         user_id = session['user_id']
         # user = gym_member_db.get(user_id)
         user_info_dict={}
+        change_log_dict = {}
 
-        updateHeight = float(request.form['heightCM'])
-        updateWeight = float(request.form['weightCM'])
-        updateGoal = str(request.form['goal'])
-        updateUserName = str(request.form['fullName'])
+        user_info_dict["full_name"] = str(request.form['fullName'])
+        user_info_dict["height"] = change_log_dict["height"] = float(request.form['heightCM'])
+        user_info_dict["weight"] = change_log_dict["weight"] = float(request.form['weightCM'])
+        user_info_dict["main_goal"] = str(request.form['goal'])
 
-        user_info_dict["full_name"] = updateUserName
-        user_info_dict["height"] = updateHeight
-        user_info_dict["weight"] = updateWeight
-        user_info_dict["main_goal"] = updateGoal
+        user_info_dict["fat_percent"] = change_log_dict["fat_percent"] = float(request.form["fatPercent"])
+        user_info_dict["waist_circumference"] = change_log_dict["waist_circum"] = float(request.form["waistCircum"])
+        user_info_dict["hip_circumference"] = change_log_dict["hip_circum"] = float(request.form["hipCircum"])
+        user_info_dict["calf_circumference"] = change_log_dict["calf_circum"] = float(request.form["calfCircum"])
+        user_info_dict["chest_width"] = change_log_dict["chest_width"] = float(request.form["chestWidth"])
+        user_info_dict["shoulder_width"] = change_log_dict["shoulder_width"] = float(request.form["shoulderWidth"])
+        user_info_dict["bicep_circumference"] = change_log_dict["bicep_circum"] = float(request.form["bicepCircum"])
 
-        user_info_dict["fat_percent"] = float(request.form["fatPercent"])
-        user_info_dict["waist_circumference"] = float(request.form["waistCircum"])
-        user_info_dict["hip_circumference"] = float(request.form["hipCircum"])
-        user_info_dict["calf_circumference"] = float(request.form["calfCircum"])
-        user_info_dict["chest_width"] = float(request.form["chestWidth"])
-        user_info_dict["shoulder_width"] = float(request.form["shoulderWidth"])
-        user_info_dict["bicep_circumference"] = float(request.form["bicepCircum"])
+        change_log_dict["user_id"] = user_id
 
-        user_info_dict["updated_at"] = datetime.date.today().strftime("%d/%m/%Y")
+        user_info_dict["updated_at"] = change_log_dict["date_recorded"] = datetime.date.today().strftime("%d/%m/%Y")
+
+        change_log_db.put(change_log_dict)
 
         gym_member_db.update(user_info_dict, user_id)
 
         return redirect(url_for('home'))
     else: 
+        return redirect(url_for('login'))
+
+@app.route('/add_treadmill_log', methods=['GET', 'POST'])
+def treadmill():
+    """
+    to enter treadmill log
+    """
+    if 'loggedin' in session:
+        msg = ''
+        if request.method == 'POST':
+            tread_mill_dict = {}
+
+            tread_mill_dict["steps"] = request.form[""]
+            tread_mill_dict["distance"] = request.form[""]
+            tread_mill_dict["minute"] = request.form[""]
+            tread_mill_dict["calories"] = request.form[""]
+            tread_mill_dict["max_speed"] = request.form[""]
+            tread_mill_dict["max_incline"] = request.form[""]
+            tread_mill_dict["feeling"] = request.form[""]
+            tread_mill_dict["date"] = request.form[""]
+            tread_mill_dict["user_id"] = request.form[""]
+            tread_mill_dict["notes"] = request.form[""]
+
+
+            treadmill_db.put(tread_mill_dict)
+        return render_template("treadmill_log.html", msg=msg)
+    else:
         return redirect(url_for('login'))
 
 @app.route("/add_exe_log", methods=['GET', 'POST'])

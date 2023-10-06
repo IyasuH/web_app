@@ -113,6 +113,36 @@ def exercise_log():
 
 # exercise_log()
 
+def treadmill_log():
+    """
+    this table is to enter treadmill log - where key(primary key) for each log (row) will be automatically generated
+    """
+    treadmill_db = deta.Base("Treadmill_DB")
+    # steps
+    # distance - mile/kilometer
+    # minutes
+    # burned calories - kilo joules
+    # max_speed(to be maximum speed user have to run on that speed atleast for 20sec) - unit
+    # max_inclination(to be maximum inclination user have to run on that inclination at least for 20 sec) - unit
+    # feeling
+    # additional_note
+
+    tm_log_dict = {}
+
+    tm_log_dict["steps"] = 1000
+    tm_log_dict["distance"] = "3.4" # I don't know the exact unit of the machine output(for now asuming km)
+    tm_log_dict["minute"] = 15 # 
+    tm_log_dict["calories"] = "110" # also here I don't know the unit(for now asuming in kj)
+    tm_log_dict["max_speed"] = "13.5" # no idea for its unit
+    tm_log_dict["max_incline"] = "12" # no idea for its unit
+    tm_log_dict["feeling"] = "A Little Hard"
+    tm_log_dict["date"] = datetime.date.today().strftime("%d/%m/%Y")
+    tm_log_dict["user_id"] = MY_ID
+    tm_log_dict["notes"] = "I synced with the music"
+
+    treadmill_db.put(tm_log_dict)
+    
+treadmill_log()
 
 def change_log():
     """
@@ -125,22 +155,36 @@ def change_log():
 # so finally users can see the changes
 # and get motiovated and also can be portifolio for trainer 
 
-    weigth = "" # in kg
-    height = "" # in cm
+    weigth = "62.5" # in kg
+    height = "169.0" # in cm
 
-    fat_percent = "" # in %
-    waist_circumference = "" # in cm
-    hip_circumference = "" # in cm
-    calf_circumference = "" # in cm
-    chest_width = "" # in cm
-    shoulder_width = "" # in cm
-    bicep_circumference = "" # in cm
+    fat_percent = "30" # in %
+    waist_circumference = "32" # in cm
+    hip_circumference = "15" # in cm
+    calf_circumference = "8" # in cm
+    chest_width = "30" # in cm
+    shoulder_width = "28" # in cm
+    bicep_circumference = "9" # in cm
 
-    date_recorded = ""
-    user_id = ""
+    date_recorded = datetime.date.today().strftime("%d/%m/%Y")
+    user_id = MY_ID
 
+    change_log_dict = {}
+    change_log_dict["weight"] = weigth
+    change_log_dict["height"] = height
+    change_log_dict["fat_percent"] = fat_percent
+    change_log_dict["waist_circum"] = waist_circumference
+    change_log_dict["hip_circum"] = hip_circumference
+    change_log_dict["calf_circum"] = calf_circumference
+    change_log_dict["chest_width"] = chest_width
+    change_log_dict["shoulder_width"] = shoulder_width
+    change_log_dict["bicep_circum"] = bicep_circumference
+    change_log_dict["date_recorded"] = date_recorded
+    change_log_dict["user_id"] = user_id
+
+    change_log_db.put(change_log_dict)
+    # key automatically assigned
 # change_log()
-# key automatically assigned
 
 def goal_setting():
     """

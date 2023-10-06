@@ -1,62 +1,62 @@
     {% extends "layout.html" %}
     {% block gym %}
     <div id="app">
-        <h1>Gym Log Telegram Web App</h1>
+        <h1>Home</h1>
         <p id="welcome_by_name"></p>
         
-        <h4>Add or edit your basic info</h4>
+        <h4>Edit your info</h4>
           <form method="POST" action="/update_personal_data">
             <table>
               <tr>
                 <th>Full Name</th>
                 <td><input required type="text" name="fullName" value="{{ user['full_name'] }}"></td>
-              </tr>              
-              <tr>
-                <th>Height</th>
-                <td><input required type="number" step="0.01" name="heightCM" value="{{ user['height'] | float }}"></td>
-              </tr>
-
-              <tr>
-                <th>Weight</th>
-                <td><input required type="number" step="0.01" name="weightCM" value="{{ user['weight'] | float }}"></td>
               </tr>
               <tr>
                 <th>Main Goal</th>
                 <td><input required type="text" name="goal" value="{{user['main_goal'] }}"></td>
               </tr>
-
+            </table>
+            <h4>Edit if you seen some changes on your body</h4>
+            <table>
+              <tr>
+                <th>Height</th>
+                <td><input required type="number" step="0.01" name="heightCM" value="{{ user['height'] | float }}"></td>
+              </tr>
+              <tr>
+                <th>Weight</th>
+                <td><input required type="number" step="0.01" name="weightCM" value="{{ user['weight'] | float }}"></td>
+              </tr>
               <tr>
                 <th>Fat Percent</th>
-                <td><input required type="number" name="fatPercent" value="{{user['fat_percent'] }}"></td>
+                <td><input required type="number" step="0.01" name="fatPercent" value="{{user['fat_percent'] }}"></td>
               </tr>
               <tr>
                 <th>Waist Circumference</th>
-                <td><input required type="number" name="waistCircum" value="{{user['waist_circumference'] }}"></td>
+                <td><input required type="number" step="0.01" name="waistCircum" value="{{user['waist_circumference'] }}"></td>
               </tr>
               <tr>
                 <th>Hip Circumference</th>
-                <td><input required type="number" name="hipCircum" value="{{user['hip_circumference'] }}"></td>
+                <td><input required type="number" step="0.01" name="hipCircum" value="{{user['hip_circumference'] }}"></td>
               </tr>
               <tr>
                 <th>Calf Circumference</th>
-                <td><input required type="number" name="calfCircum" value="{{user['calf_circumference'] }}"></td>
+                <td><input required type="number" step="0.01" name="calfCircum" value="{{user['calf_circumference'] }}"></td>
               </tr>
               <tr>
                 <th>Chest Width</th>
-                <td><input required type="number" name="chestWidth" value="{{user['chest_width'] }}"></td>
+                <td><input required type="number" step="0.01" name="chestWidth" value="{{user['chest_width'] }}"></td>
               </tr>
               <tr>
                 <th>Shoulder Width</th>
-                <td><input required type="number" name="shoulderWidth" value="{{user['shoulder_width'] }}"></td>
+                <td><input required type="number" step="0.01" name="shoulderWidth" value="{{user['shoulder_width'] }}"></td>
               </tr>
               <tr>
                 <th>Bicep Circumference</th>
-                <td><input required type="number" name="bicepCircum" value="{{user['bicep_circumference'] }}"></td>
+                <td><input required type="number" step="0.01"  name="bicepCircum" value="{{user['bicep_circumference'] }}"></td>
               </tr>
-
             </table>
             <br>
-            <input type="button">
+            <!-- <input type="button"> -->
             <br>
             <input type="submit" value="Submit">
           </form>
