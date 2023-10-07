@@ -46,7 +46,7 @@ key = ''.join(secrets.choice(chars) for _ in range(32))
 app.secret_key = key # 
 
 app.config["SESSION_PERMANENT"] = True # so the session has a default time limit which expires
-app.config['PERMANENT_SESSION_LIFETIME'] = 1200 # 20 min
+app.config['PERMANENT_SESSION_LIFETIME'] = 7200 # 20 min
 
 
 app.logger.setLevel(logging.INFO)
