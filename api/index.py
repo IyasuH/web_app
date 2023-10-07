@@ -40,13 +40,16 @@ now = datetime.datetime.now()
 
 app = Flask(__name__)
 
-chars = string.ascii_letters + string.digits+string.punctuation
-key = ''.join(secrets.choice(chars) for _ in range(32))
+def gen_key():
+    chars = string.ascii_letters + string.digits+string.punctuation
+    key = ''.join(secrets.choice(chars) for _ in range(32))
+    return key
 
-app.secret_key = key # 
+
+app.secret_key = gen_key() # 
 
 app.config["SESSION_PERMANENT"] = True # so the session has a default time limit which expires
-app.config['PERMANENT_SESSION_LIFETIME'] = 108000 # 20 min
+app.config['PERMANENT_SESSION_LIFETIME'] = 1800 # 20 min
 
 
 app.logger.setLevel(logging.INFO)
