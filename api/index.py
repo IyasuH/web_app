@@ -1,12 +1,13 @@
 from flask import Flask, render_template, request, session, redirect, url_for
 from dotenv import load_dotenv
 import datetime
-from flask_table import Table, Col, ButtonCol, DatetimeCol, DateCol
+from flask_table import Table, Col
 from deta import Deta
 import os
-
+from bleach import clean
 import string
 import secrets
+import logging
 
 load_dotenv()
 
@@ -16,27 +17,18 @@ deta = Deta(DETA_KEY)
 gym_member_db = deta.Base("User_DB")
 
 change_log_db = deta.Base("Change_Log_DB")
-# gym_member_ids = []
 
 def load_member_list():
     gym_members = gym_member_db.fetch().items
-    gym_member_ids = []
-    for gym_member in gym_members:
-        gym_member_ids.append(gym_member["user_id"])
-
+    gym_member_ids = [gym_member["user_id"] for gym_member in gym_members]
     return gym_member_ids
 
 waiting_db = deta.Base("Waiting_DB")
-# waiting_member_ids = []
 
 def load_waiting_list():
     # to load waiting_member ids
-    waiting_member_ids = []
     waiting_members = waiting_db.fetch().items
-    
-    for waiting_member in waiting_members:
-        waiting_member_ids.append(waiting_member["user_id"])
-
+    waiting_member_ids = [waiting_member["user_id"] for waiting_member in waiting_members]
     return waiting_member_ids
 
 
@@ -51,11 +43,18 @@ app = Flask(__name__)
 chars = string.ascii_letters + string.digits+string.punctuation
 key = ''.join(secrets.choice(chars) for _ in range(32))
 
-app.secret_key = DETA_KEY # 
+app.secret_key = key # 
 
 app.config["SESSION_PERMANENT"] = True # so the session has a default time limit which expires
 app.config['PERMANENT_SESSION_LIFETIME'] = 1200 # 20 min
 
+
+app.logger.setLevel(logging.INFO)
+handler = logging.FileHandler('app.log')
+handler.setLevel(logging.INFO)
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+app.logger.addHandler(handler)
 
 class Exe_log_table(Table):
     user_id = Col('user_id')
@@ -68,42 +67,22 @@ class Exe_log_table(Table):
     feeling = Col('feeling')
     additional_info = Col('additional_info')
 
-# def format_date(date, format_string):
-#     if isinstance(date, str):
-#         date = datetime.datetime.strptime(date, '%m/%d/%Y')
-#     return date.strftime(format_string)
-
-# app.jinja_env.filters['strftime'] = format_date
-
-gym_member_ids = load_member_list()
-waiting_member_ids = load_waiting_list()
-
-load_waiting_list()
-
-@app.route('/signup/')
-def signup():
-    """
-    where user request to signup and his request will be sent to admin's 
-    - if they approve it his data will be signed in the main db table
-    - if not his data will be stored in separte db table
-    """
-    
-
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
+    """
+    Handles user login 
+    """
     msg = ''
     if 'userId' in request.form:
-        user_id = request.form['userId']
+        user_id = clean(request.form['userId'])
         # to reload 
         gym_member_ids = load_member_list()
         waiting_member_ids = load_waiting_list()
 
-        print('members id list: {}', gym_member_ids)
-        print('waiting_id list: {}', waiting_member_ids)
-
         if user_id in gym_member_ids:
             session['loggedin'] = True
             session['user_id'] = user_id
+            app.logger.info(f"{user_id} loggedin")
             return redirect(url_for('home'))
         
         elif user_id in waiting_member_ids:
@@ -111,7 +90,8 @@ def login():
             user already in waiting list
             """
             user = waiting_db.get(user_id)
-            msg = "Hi {} 👋, approval is sent to admin please be patient 😊.".format(user['first_name'])
+            msg = f"Hi {user['first_name']} 👋, approval is sent to admin please be patient 😊."
+            app.logger.info(f"{user_id} already requested for approval")
             return render_template('waiting.html', msg=msg)
         
         else:
@@ -119,26 +99,33 @@ def login():
             user does not request approval
             """
             # msg = 'User is not registered'
+            app.logger.info("user neither does not request approval nor logged in")
             return render_template("signup.html")
+    app.logger.warning("User not logged in or session expired")
     return render_template('login.html', msg=msg)
 
 @app.route('/request_approval', methods=['GET', 'POST'])
 def request_approval():
+    """
+    Handles user request for approval
+    GET: Dispaly the form
+    POST: process the form data and redirects to the login page
+    """
     if request.method == 'POST':
-        waiting_dict = {}
-
-        waiting_dict["first_name"] = request.form['firstName']
-        waiting_dict["last_name"] = request.form['lastName']
-        waiting_dict["user_name"] = request.form['userName']
-        waiting_dict["user_id"] = request.form['userId']
-        waiting_dict["is_bot"] = bool(request.form['isBot'])
-        waiting_dict["allows_write"] = bool(request.form['allowWrite'])
-        waiting_dict["requested_at"] = datetime.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
-        waiting_dict["approved"] = False
-        waiting_dict["key"] = request.form['userId']
-
+        waiting_dict = {
+            "first_name": clean(request.form['firstName']),
+            "last_name": clean(request.form['lastName']),
+            "user_name": clean(request.form['userName']),
+            "user_id": clean(request.form['userId']),
+            "is_bot": bool(request.form['isBot']),
+            "allows_write": bool(request.form['allowWrite']),
+            "requested_at": datetime.datetime.now().strftime("%d/%m/%Y - %H:%M:%S"),
+            "approved": False,
+            "key": clean(request.form['userId']),
+        }
         waiting_db.put(waiting_dict)
         # here let's reload waiting_id list and return to login
+        app.logger.info(f"Approval submitted for {request.form['userId']}")
         load_waiting_list()
         return redirect(url_for('login'))
     return render_template("signup.html")
@@ -146,14 +133,14 @@ def request_approval():
 @app.route('/', methods=['GET', 'POST'])
 def home():
     """
-    to see and edit perosoanl data
+    Handles main page
+    GET: Dispaly form
+    POST: Process the form
     """
     if 'loggedin' in session:
         user = gym_member_db.get(session['user_id'])
-        print(user)
-        print(type(user))
-        # print(user[0])
         return render_template('home.html', user=user)
+    app.logger.warning("User not logged in or session expired")
     return redirect(url_for('login'))
     
 
@@ -161,6 +148,7 @@ def home():
 def update_personal_data():
     """
     when submitting the update to database
+    POST: process the form and update data and returns to home page
     """
     if 'loggedin' in session:
         user_id = session['user_id']
@@ -168,10 +156,10 @@ def update_personal_data():
         user_info_dict={}
         change_log_dict = {}
 
-        user_info_dict["full_name"] = str(request.form['fullName'])
+        user_info_dict["full_name"] = clean(str(request.form['fullName']))
         user_info_dict["height"] = change_log_dict["height"] = float(request.form['heightCM'])
         user_info_dict["weight"] = change_log_dict["weight"] = float(request.form['weightCM'])
-        user_info_dict["main_goal"] = str(request.form['goal'])
+        user_info_dict["main_goal"] = clean(str(request.form['goal']))
 
         user_info_dict["fat_percent"] = change_log_dict["fat_percent"] = float(request.form["fatPercent"])
         user_info_dict["waist_circumference"] = change_log_dict["waist_circum"] = float(request.form["waistCircum"])
@@ -188,36 +176,39 @@ def update_personal_data():
         change_log_db.put(change_log_dict)
 
         gym_member_db.update(user_info_dict, user_id)
-
+        app.logger.info(f"Perosnla data for {user_id} is updated successfully")
         return redirect(url_for('home'))
     else: 
+        app.logger.warning("User not logged in or session expired")
         return redirect(url_for('login'))
 
 @app.route('/add_treadmill_log', methods=['GET', 'POST'])
 def treadmill():
     """
     to enter treadmill log
+    GET: display the form
+    POST: process the form and eneter the data to db
     """
     if 'loggedin' in session:
         msg = ''
         if request.method == 'POST':
-            tread_mill_dict = {}
-
-            tread_mill_dict["steps"] = request.form[""]
-            tread_mill_dict["distance"] = request.form[""]
-            tread_mill_dict["minute"] = request.form[""]
-            tread_mill_dict["calories"] = request.form[""]
-            tread_mill_dict["max_speed"] = request.form[""]
-            tread_mill_dict["max_incline"] = request.form[""]
-            tread_mill_dict["feeling"] = request.form[""]
-            tread_mill_dict["date"] = request.form[""]
-            tread_mill_dict["user_id"] = request.form[""]
-            tread_mill_dict["notes"] = request.form[""]
-
-
+            tread_mill_dict = {
+                'steps': request.form["steps"],
+                'distance': clean(str(request.form["distance"])),
+                'minute': request.form["minutes"],
+                'calories': clean(str(request.form["calories"])),
+                'max_speed': clean(str(request.form["max_speed"])),
+                'max_incline': clean(str(request.form["max_incline"])),
+                'feeling': clean(request.form["feeling"]),
+                'date': clean(request.form["work_date"]),
+                'user_id': session['user_id'],
+                'notes': clean(request.form["notes"])
+            }
             treadmill_db.put(tread_mill_dict)
+            app.logger.info(f"New Traedmill exercise is recorded for user {session['user_id']}")
         return render_template("treadmill_log.html", msg=msg)
     else:
+        app.logger.warning("User not logged in or session expired")
         return redirect(url_for('login'))
 
 @app.route("/add_exe_log", methods=['GET', 'POST'])
@@ -225,34 +216,38 @@ def add_log():
     """
     to add exercise log of user
     - if users telegram userid is registered
+    GET: dispaly the form to add exercise log
+    POST: process the form and add the data to db
     """
     if 'loggedin' in session:
         msg = ''
         if request.method == 'POST':
-            log_info_dict = {}
-
-            log_info_dict["body_area"] = request.form['bodyOfArea']
-            log_info_dict["exercise_name"] = request.form['exerciseName']
-            log_info_dict["equipment_used"] = request.form['equipmentUsed']
-            log_info_dict["number_of_reps"] = request.form['numberOfReps']
-            log_info_dict["number_of_cycles"] = request.form['numberOfCycle']
-            log_info_dict["exercise_duration"] = request.form['exerciseDuration']
-            log_info_dict["feeling"] = request.form['feeling']
-            log_info_dict["date_worked"] = request.form['dateWorked']
-            log_info_dict["additional_info"] = request.form['addInfo']
-
-            log_info_dict["user_id"] = session['user_id']
+            log_info_dict = {
+                'body_area': clean(request.form['bodyOfArea']),
+                'exercise_name': clean(request.form['exerciseName']),
+                'equipment_used': clean(request.form['equipmentUsed']),
+                'number_of_reps': request.form['numberOfReps'],
+                'number_of_cycles': request.form['numberOfCycle'],
+                'exercise_duration': clean(request.form['exerciseDuration']),
+                'feeling': clean(request.form['feeling']),
+                'date_worked': clean(request.form['dateWorked']),
+                'additional_info': clean(request.form['addInfo']),
+                'user_id':session["user_id"],
+            }
             msg = 'New exercise data saved'
             
             log_db.put(log_info_dict)
+            app.logger.info(f"new exercise is log is recorded for user {session['user_id']}")
         return render_template("add_logg.html", msg=msg)
     else:
+        app.logger.warning("User not logged in or session expired")
         return redirect(url_for('login'))
 
 @app.route('/see_exe_log')
 def see_log():
     """
     to see exercise log
+    GET: dispplays the exercise table  - if user is logged in
     """
     if 'loggedin' in session:
         user_id = session["user_id"]
@@ -261,6 +256,7 @@ def see_log():
         table_exe_log.border = True
         return render_template('see_logg.html', exe_table=table_exe_log)
     else:
+        app.logger.warning("User not logged in or session expired")
         return redirect(url_for('login'))
 
 if __name__ == "__main__":
