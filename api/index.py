@@ -41,7 +41,7 @@ now = datetime.datetime.now()
 app = Flask(__name__)
 
 def gen_key():
-    chars = string.ascii_letters + string.digits+string.punctuation
+    chars = string.ascii_letters + string.digits
     key = ''.join(secrets.choice(chars) for _ in range(32))
     return key
 
