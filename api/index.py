@@ -50,11 +50,11 @@ app.config['PERMANENT_SESSION_LIFETIME'] = 1200 # 20 min
 
 
 app.logger.setLevel(logging.INFO)
-handler = logging.FileHandler('app.log')
-handler.setLevel(logging.INFO)
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-handler.setFormatter(formatter)
-app.logger.addHandler(handler)
+# handler = logging.FileHandler('app.log')
+# handler.setLevel(logging.INFO)
+# formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+# handler.setFormatter(formatter)
+# app.logger.addHandler(handler)
 
 class Exe_log_table(Table):
     user_id = Col('user_id')
