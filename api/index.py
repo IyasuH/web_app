@@ -8,10 +8,13 @@ from bleach import clean
 import string
 import secrets
 import logging
+from flask_session import Session
+import redis
 
 load_dotenv()
 
 DETA_KEY = os.getenv("DETA_KEY")
+KV_URL = os.getenv("KV_URL")
 deta = Deta(DETA_KEY)
 
 gym_member_db = deta.Base("User_DB")
@@ -38,19 +41,22 @@ treadmill_db = deta.Base("Treadmill_DB")
 
 now = datetime.datetime.now()
 
-app = Flask(__name__)
-
 def gen_key():
     chars = string.ascii_letters + string.digits
     key = ''.join(secrets.choice(chars) for _ in range(32))
     return key
 
+app = Flask(__name__)
 
-app.secret_key = gen_key() # 
+app.debug = True
 
+app.secret_key = gen_key()
+app.config["SESSION_TYPE"] = "redis"
+app.config["SESSION_REDIS"] = redis.from_url(KV_URL)
 app.config["SESSION_PERMANENT"] = True # so the session has a default time limit which expires
 app.config['PERMANENT_SESSION_LIFETIME'] = 1800 # 20 min
 
+Session(app)
 
 app.logger.setLevel(logging.INFO)
 # handler = logging.FileHandler('app.log')
@@ -58,7 +64,7 @@ app.logger.setLevel(logging.INFO)
 # formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 # handler.setFormatter(formatter)
 # app.logger.addHandler(handler)
-
+ 
 class Exe_log_table(Table):
     user_id = Col('user_id')
     date_worked = Col('date_worked')
