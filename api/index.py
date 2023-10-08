@@ -50,9 +50,9 @@ app = Flask(__name__)
 
 app.debug = True
 
-app.secret_key = gen_key()
-app.config["SESSION_TYPE"] = "redis"
-app.config["SESSION_REDIS"] = redis.from_url(KV_REST_API_URL)
+app.secret_key = DETA_KEY
+# app.config["SESSION_TYPE"] = "redis"
+# app.config["SESSION_REDIS"] = redis.from_url(KV_REST_API_URL)
 app.config["SESSION_PERMANENT"] = True # so the session has a default time limit which expires
 app.config['PERMANENT_SESSION_LIFETIME'] = 1800 # 20 min
 
