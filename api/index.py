@@ -9,12 +9,12 @@ import string
 import secrets
 import logging
 from flask_session import Session
-import redis
+# import redis
 
 load_dotenv()
 
 DETA_KEY = os.getenv("DETA_KEY")
-KV_REST_API_URL = os.getenv("KV_URL")
+# KV_REST_API_URL = os.getenv("KV_URL")
 deta = Deta(DETA_KEY)
 
 gym_member_db = deta.Base("User_DB")
