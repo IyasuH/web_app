@@ -14,7 +14,7 @@ import redis
 load_dotenv()
 
 DETA_KEY = os.getenv("DETA_KEY")
-KV_URL = os.getenv("KV_URL")
+KV_REST_API_URL = os.getenv("KV_REST_API_URL")
 deta = Deta(DETA_KEY)
 
 gym_member_db = deta.Base("User_DB")
@@ -52,7 +52,7 @@ app.debug = True
 
 app.secret_key = gen_key()
 app.config["SESSION_TYPE"] = "redis"
-app.config["SESSION_REDIS"] = redis.from_url(KV_URL)
+app.config["SESSION_REDIS"] = redis.from_url(KV_REST_API_URL)
 app.config["SESSION_PERMANENT"] = True # so the session has a default time limit which expires
 app.config['PERMANENT_SESSION_LIFETIME'] = 1800 # 20 min
 
