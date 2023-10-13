@@ -56,7 +56,7 @@ app.secret_key = DETA_KEY
 app.config["SESSION_PERMANENT"] = True # so the session has a default time limit which expires
 app.config['PERMANENT_SESSION_LIFETIME'] = 1800 # 20 min
 
-Session(app)
+# Session(app)
 
 app.logger.setLevel(logging.INFO)
 # handler = logging.FileHandler('app.log')
