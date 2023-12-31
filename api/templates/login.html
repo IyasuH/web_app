@@ -23,7 +23,12 @@
         </table>
         <input type="submit" value="Login using Telegram">
     </form>
-    <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="deregymbot" data-size="medium" data-radius="7" data-auth-url="https://web-app-iyasuh.vercel.app/" data-request-access="write"></script>
+    <script async src="https://telegram.org/js/telegram-widget.js?22" data-telegram-login="deregymbot" data-size="large" data-radius="14" data-onauth="onTelegramAuth(user)" data-request-access="write"></script>
+<script type="text/javascript">
+  function onTelegramAuth(user) {
+    alert('Logged in as ' + user.first_name + ' ' + user.last_name + ' (' + user.id + (user.username ? ', @' + user.username : '') + ')');
+  }
+</script>
     <pre><code id="webview_data"></code></pre>
     <script src="../static/scripts/index.js?v=12"></script>
 </body>
