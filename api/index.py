@@ -82,10 +82,11 @@ def login():
     Handles user login 
     """
     msg = ''
-    user_id = request.form['id']
-    first_name = request.form['first_name']
-    hash = request.form['hash']
-    print(f'id: {user_id}, first name: {first_name}, hash: {hash}')
+    if 'id' in request.form:
+        user_id = request.form['id']
+        first_name = request.form['first_name']
+        hash = request.form['hash']
+        print(f'id: {user_id}, first name: {first_name}, hash: {hash}')
     if 'userId' in request.form:
         user_id = clean(request.form['userId'])
         # to reload 
