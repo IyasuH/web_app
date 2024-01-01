@@ -83,7 +83,7 @@ def login():
     """
     msg = ''
     print("[INFO]: Receiving authorization data")
-    if 'id' in request.form:
+    if 'hash' in request.form:
         user_id = request.form['id']
         first_name = request.form['first_name']
         hash = request.form['hash']
