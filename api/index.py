@@ -82,6 +82,7 @@ def login():
     Handles user login 
     """
     msg = ''
+    print("[INFO]: Receiving authorization data")
     if 'id' in request.form:
         user_id = request.form['id']
         first_name = request.form['first_name']
@@ -151,6 +152,13 @@ def home():
     GET: Dispaly form
     POST: Process the form
     """
+    print("[INFO]: Receiving authorization data")
+    if 'id' in request.form:
+        user_id = request.form['id']
+        first_name = request.form['first_name']
+        hash = request.form['hash']
+        print(f'id: {user_id}, first name: {first_name}, hash: {hash}')
+    
     if 'loggedin' in session:
         user = gym_member_db.get(session['user_id'])
         return render_template('home.html', user=user)
